@@ -23,6 +23,8 @@ func RegisterRoutes(serviceMap map[string]interface{}) *gin.Engine {
 	v1 := r.Group("/api/v1")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	v1.GET("/ping", api.Ping)
+	v1.GET("/captcha", api.GetCaptcha)
+	v1.GET("/captcha/:captchaID", api.GeneratePicture)
 	u := v1.Group("/user")
 	{
 		u.GET("/:id", user.GetUser)
@@ -39,6 +41,8 @@ func RegisterRoutes(serviceMap map[string]interface{}) *gin.Engine {
 	{
 		a.GET("/:id", account.GetAccountByID)
 		a.GET("/user/:userid", account.GetAccountByUserID)
+		a.POST("", account.CreateAccount)
+		a.DELETE("", account.DeleteAccount)
 	}
 
 	return r
